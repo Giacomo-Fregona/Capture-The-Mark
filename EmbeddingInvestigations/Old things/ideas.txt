@@ -1,0 +1,8 @@
+Inserire i watermark in blocchi 8x8 (spargerli non avrebbe senso considerando la jpeg compression)
+Forse si potrebbero utilizzare blocchi piu grandi considerando che tutti gli attacchi per blocchi trarrebbero svantaggio da watermark distibuiti a blocchi
+Inserire i watermark nei DC di sottoblocchi dell immagine
+Sembrerebe esserci abbastanza precisione per poterlo fare
+Utilizzare coding theory per ottenere una maggiore resistenza dagli attacchi
+scartare i blocchi che piu impatterebbero sul wpsnr
+
+NON e una buona idea lavorare su deconvolve (schife)
