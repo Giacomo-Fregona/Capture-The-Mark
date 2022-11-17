@@ -1,0 +1,15 @@
+Good evening,
+
+please find attached the log file for the group pixel.
+
+However we would like to discuss about the fact that other groups exploited the data gained from the difference of the watermarked and original image to algorithmically build their attack. In our opinion this type of attack is far from the ideal framework of digital watermarking and it is not something that would have occurred in a real world scenario, where obviously an attacker does not hold the original image.
+Our watermarking tecnique was not thought to be robust against this types of attacks. When we understood that the other groups were preparing something in this direction, the submission for relevant changes was already expired, so we tried to modify our code in the last days in order to gain robustness vith only small changes in the embedding/detection strategy allowed. We submitted a code but it was refused as it was considered a workaround, even if it was working properly and the modifications were made against this specific attack and have been explicitly motivated in an e-mail (sent only to Dott. Montibeller yesterday).
+We accept this correction and we understand it is not possible to clarify the rules after the competition happened, so we do not expect changes in the final standings, but we ask this argument to be considered in the final evaluation of the group work.
+
+Finally we would like to thank you for the opportunity you gave us with this competition that, as you can see, has really "caught" our interest.
+
+Best regards,
+
+pixel group
+
+

@@ -1,0 +1,46 @@
+Hi guys I would like to show you something for the project. I know it is a long message, sry for that. Please tell me if you manage to find or write something and i will look at your work. The following is the direction i have taken today but we are not too late to change direction or follow some other ideas.
+
+
+
+
+Today I tried to fix the code I showed you yesterday (failEmbeddingGiacomo) and got some result. 
+I uploaded all the (3) new files in our drive in a folder called altEmbedding (alt only because initially i was looking for alternative strategies). You need to have already downloaded and unzipped the sample images as in the lab to execute the code.
+The idea of this new version was the following:
+
+1) forget about second level dct and work only after the first step of dct. The embedding is the following: after you have constructed the dc image, insert there the watermark considering an additive constant beta as scaling factor. For the moment the watermark is in the first part of the pixels but I think we should choose pseudorandmly the position of the pixels so that we spread the mark all over the image and we have do not suffer from localized attacks
+2) instead of embedding only the watermark, insert also a second (or third? it depends on the parameter mark_repetitions) copy of the mark. We have enough pixels to do so. At the end we could then compare our two recovered copies of the watermark and try to extimate with more accurancy the right value (for example averaging, or trying to guess if only one is corrupted by the attack)
+- when extracting the watermark, do the ceil of the watermarked bits. In this way we do not consider values of the bits that are heavily distorted and that we are sure they are wrong
+
+
+
+Results:
+3) I send you the rock curve and the final printed values. I used 100 samples, and the average wPSNR for the embedded images is 49.4... not wery good. During the all day I tried with lena having the wPSNR of 59, and when I looked at the average value i was a bit discouraged, but maybe with some corrections we can understand why in lena it workes while it does not in other images
+
+
+
+Problems:
+4) the embedding even without attacks does not provide the exact correct value for the embedded bits with value 1 (it returns something like 0.94.. and seems to depend highly on the parameter beta). I think this is linked to the fact that we have only 8x8 pixels per block and so we can not represent precisely the image corresponding to the one we created in the transform domain. Probably we whould understand better the dct transform in 8x8 blocks in order to fix that
+
+
+
+Possible improvements:
+5) try to get a higher wpsnr in any way. A possible idea could be to forget about the border (that for now are excluded for the embedding) and insert also there the watermark, so that the density of the mark over the image will lower. We could also take care of the fact that 
+6) replace the embedding of the two copyes of the watermark with some other encoding of the watermark. probably the optimal way to do the work is finding some tool from coding theory. maybe I could try to ask to my professors if they could suggest me some reference. In that way maybe we could insert the same level of information changing less our image and so obtaining a better wpsnr.
+Another way to try improving the corrections of errors could be make use of some neural network or something like this. I dont know so much about that, maybe you could have some nice idea... it should not be too difficult to produce a dataset in that case
+7) use initially a wawelet decomposition in order to mitigate the impact on the wpsnr (bit I am not sure we have enough bits to do so. Maybe in that case we do not put the second copy of the watermark in the embedding). In my opinion this is not going to work but maybe we could give a chance to this strategy
+8) try to adapt the embedding to our watermark. Probably there could be better blocks where to insert the 1 values of the watermark (where they have less impact for example)
+
+
+
+I have also tried to improve the attack and rock curve codes fixing some small bugs I found. In particular, in the computation of the curve I excluded cases in wich the attach produces less than 35 of wPSNR score (we wont lose points in that case in the competition, so i mean is prevent those attacks not our business). I have also divided attacks and other utility functions in other two files.
+
+
+
+Other things to do:
+9) reorganize the code, I'm sorry am not an expert programmer, probably it is not so well written
+10) construct an automatic way to select the attack parameters. this can be useful both during the attack phase and during the extimation of our treshold, that for the moment do not take care of attacks with low quality but probably it is onlhy a matter of guessing the right parameters
+11) try to prepare some attacks for the competition. In particular I have two attacks that in my opinio should work very well: 
+
+Border attack) We could try to exploit the fact that the first lines of pixels are very less sensitive to the wPSNR. We could almost choose the value we want for the pixel without effecting the quality so much! We should use this to attack the other groups if they are not aware of that. For example if a group starts with a full frame spectrum of the image, we will probably be able to break his/her watermark. N.B. i think that the fact that those pixels impact less is something not so easy to understand, i notice that by accident. So please dont tell anybody about that and we will hopefully have a surprise advantage over the other groups!
+
+Collusion attack) Clearly in the attack phase we can not use the original image. but we have different images to attack, each one with possibly different embedding strategies that should look as random bit modifications from our point of view. So we could try to get a good approximation of the original image averaging the image we have to attack. In that way we could understand where to find manyof the modifications of the other group images and apply attacks in particular locations of the image with different parameters. I have asked Giulia in the last class if this is legal and the answer is yes, it is

@@ -1,0 +1,27 @@
+Good morning everyone, we are the group pixel.
+
+I'll start explaining the investigations that suggest us our strategy.
+
+Investigation #1: our wPSNR function
+We studied at the wpsnr function and discovered that the image is very less sensitive in the borders. (Dietro comparison cropping on borders or in the middle of the image) 
+So we thought that our mark would have been: not image depending (only the difference counts) and really easy to modify a move, in order to use the positioning as a parameter to get higher wpsnr
+
+Investigation #2: jpeg compression
+We considered jpeg compression as the most threating attack. We decided to design a method that could be robust against this, inserting our mark in the DC component of 8x8 blocks. 
+
+
+Embedding
+Explaining our method: (Very good image in the background)
+Divide the image in 8x8 blocks
+Consider the DCT of each block
+Collect all the DCs of the blocks and construct a new image 
+Insert there the mark
+
+In real tests changing the DC turned out to almost coincide to adding a costant value to all the pixels of the block, which was simpler and with less round errors. So we finally end up doing so. Simple but properly working.
+We investigated different ways to insert the mark in DC images, in particular we tried using some algebraic code but we got bad results. Then we decided to put a random mask on the dc image and locate here one or more copies of the image, comparing the different copies in the detection.
+
+So the detection has two phases: first of all procede as the embedding and then compute the extimated bits with this easy formula. Then we need to put together all the information from the different copies. Provbably the best way of doing so would have been using fuzzy logic, but the fuzzification phase was difficult to define. So finally we extimated a confidence value for each extracted bit measured on its distance from [0,1] and taking the weighted average as a result. In particular we put zero if we not have any information about the bit.
+
+Robustness against comparison attack
+In the last days we understood that some groups would have attack our embedding using the comparison between original and watermarked image.
+Our fragility against this attack is easy to understand: one compares the image with the original one will be able to temper only our ones, going over the confidence threshold and then changing them into zeros. So our idea was the following: why don't embedding ones instead of zeros and zeros instead of ones? In that way an attacker would see the zeros, and tempering them we will have bad cofidence and put again zero there, still guessing the right value. Conversely, an attacker would not be able fo see any trace of our ones. Anyway this attack would have obviously extract [1,...,1] from the original image and thus giving a high similarity. We tried to fix and discuss this with Dott. Montibeller and finally decided to remove this variant of the code.

@@ -1,0 +1,32 @@
+SLIDE TITOLO
+
+Good morning everyone, we are the group pixel.
+
+SLIDE 1
+I'll start explaining the investigations that suggested us our strategy.
+We studied at the wpsnr function and discovered that the image is very less sensitive in the borders and depends only from the difference of the two images.
+So our mark do not need to variate depending on the luminance of the image and its position impacts the wPSNR.
+
+We decided to design a method that could be robust against Jpeg compression, inserting our mark in the DC component of 8x8 blocks. 
+
+
+SLIDE 2:
+So our strategy can be explained in theory as follows:
+Divide the image in 8x8 blocks
+Consider the DCT of each block
+Collect all the DCs of the blocks and construct a new image 
+Insert there the mark
+
+We investigated different ways to insert the mark in DC images, in particular we tried using some algebraic codes but we got bad results. Then we decided to put a random mask on the dc image and locate here additively one or more copies of the image, comparing the different resulting copies in the detection.
+
+SLIDE 3:
+The detection follows the same structure but considering the difference between the block DC's of the original and watermarked images.
+
+SLIDE 4:
+In practical tests, changing the DC for representing a one bit turned out to be the same as adding a costant value alpha to all the pixels of the block, which was simpler and with less round errors. So we end up doing so. Simple but properly working. Correspondently, we used this easy formula for evaluating the value of each bit in the detection.
+
+Finally we need to put together all the information coming from the different copies of a bit spread all over the image. So we extimate a confidence value for each extracted copy of the bit measuring its distance from [0,1] and take the weighted average of bits values as the result. In particular we return zero if we do not have any information about the bit, which happens when the block is heavily modified by an attack.
+
+SLIDE 5: 
+In the last days we understood that some groups would have attack our embedding using the comparison between original and watermarked image.
+Our fragility against this attack is easy to understand: if one compares the image with the original one will be able to localize our ones, and if they are strongly attacked our detection understands it can not trust their value and puts zero in those positions of the mark. So our idea was the following: why don't embedding ones instead of zeros and zeros instead of ones? In that way an attacker would have seen the zeros, and attacking them our detection would not trust their value returning zero, hence guessing the right value. Conversely, an attacker would not be able to find our ones. Anyway this strategy would have obviously extract [1,...,1] from the original image and thus giving a high similarity. We tried to fix that and discussed it with Dott. Montibeller and finally decided to remove this variant of the code because it was a borderline solution.
